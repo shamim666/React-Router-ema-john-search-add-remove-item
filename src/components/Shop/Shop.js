@@ -5,11 +5,17 @@ import { addToDb, getStoredCart } from '../../utilities/fakedb';
 import './Shop.css';
 
 const Shop = () => {
+
+    // products state which is initially empty . this should be changed either useEffect or eventhandler
     const [products, setProducts] = useState([]);
+    // cart state which is initially empty . this should be changed either useEffect or eventhandler
     const [cart, setCart] = useState([]);
-    // products to be rendered on the UI
+    // displayProducts is being used for search result
     const [displayProducts, setDisplayProducts] = useState([]);
 
+
+    // data load by API and change products  and  displayProducts state. 
+    // if useEffect has no dependencies that means empty array [] then it will load only once.  
     useEffect(() => {
         fetch('./products.JSON')
             .then(res => res.json())
@@ -19,6 +25,18 @@ const Shop = () => {
             });
     }, []);
 
+
+    // cart state has been changed by selecting product  or adding product to cart .  
+    const handleAddToCart = (product) => {
+        const newCart = [...cart, product];
+        setCart(newCart);
+        // save to browser local storage (for now) in future in database. 
+        addToDb(product.key);
+    }
+
+
+    // here useEffect has dependencies [products] which means if products change useEffect will  load.
+    // here useEffect is used to read data from browser local storage and set it to cart by setCart
     useEffect(() => {
         if (products.length) {
             const savedCart = getStoredCart();
@@ -35,13 +53,7 @@ const Shop = () => {
         }
     }, [products])
 
-    const handleAddToCart = (product) => {
-        const newCart = [...cart, product];
-        setCart(newCart);
-        // save to local storage (for now)
-        addToDb(product.key);
-    }
-
+    // Search result has been done by this onChange event
     const handleSearch = event => {
         const searchText = event.target.value;
 
@@ -50,15 +62,22 @@ const Shop = () => {
         setDisplayProducts(matchedProducts);
     }
 
+
+    // this section is only for rendering to UI. that means what you want to show in UI
     return (
-        <>
+        <div>
+            {/* showing search section */}
             <div className="search-container">
                 <input
                     type="text"
                     onChange={handleSearch}
                     placeholder="Search Product" />
             </div>
+
+
             <div className="shop-container">
+
+                {/* showing  searched  products and also total products  */}
                 <div className="product-container">
                     {
                         displayProducts.map(product => <Product
@@ -69,11 +88,13 @@ const Shop = () => {
                         </Product>)
                     }
                 </div>
+
+                {/* showing cart             */}
                 <div className="cart-container">
                     <Cart cart={cart}></Cart>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 

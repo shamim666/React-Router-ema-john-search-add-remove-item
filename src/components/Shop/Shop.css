@@ -5,6 +5,7 @@
 }
 .search-container input{
     width: 75%;
+    padding: 5px;
 }
 .shop-container{
     display: grid;

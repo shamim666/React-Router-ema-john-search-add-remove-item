@@ -29,8 +29,19 @@ const Shop = () => {
 
     // cart state has been changed by selecting product  or adding product to cart .  
     const handleAddToCart = (product) => {
-        const newCart = [...cart, product];
-        setCart(newCart);
+       const exists = cart.find (pd => pd.key === product.key )
+       let newCart = []
+       if(exists){
+           const rest = cart.filter(pd => pd.key !== product.key)
+           exists.quantity = exists.quantity + 1
+           newCart = [ ...rest , exists]
+       }
+       else{
+           product.quantity = 1 
+           newCart = [...cart , product]
+       }
+
+        setCart(newCart)
         // save to browser local storage (for now) in future in database. 
         addToDb(product.key);
     }
@@ -47,6 +58,7 @@ const Shop = () => {
                 if (addedProduct) {
                     const quantity = savedCart[key];
                     addedProduct.quantity = quantity;
+                    
                     storedCart.push(addedProduct);
                 }
             }

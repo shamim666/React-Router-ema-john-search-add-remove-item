@@ -10,7 +10,7 @@ const [cart , setCart] = useState([]);
 
     useEffect(() => {
         if (products.length) {
-            // here getStoredCart() function in faKeyboard.js is used to get info from browser local Storage 
+            // here getStoredCart() function in faKedb.js is used to get info from browser local Storage 
             // which is a object. 
             const savedCart = getStoredCart();
             const storedCart = [];

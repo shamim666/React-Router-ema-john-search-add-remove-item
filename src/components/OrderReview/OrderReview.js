@@ -10,12 +10,14 @@ import ReviewItems from '../ReviewItems/ReviewItems';
 //OrderReview Page shows the added products of cart and  cart itself 
 const OrderReview = () => {
 
+    // useProducts() and useCart() is a custom hook function and its definition is in hooks
     // here useProducts() returns a array inside array  come from useProducts function which returns [products] 
     // and products is a array and it is wrapped by [] . so it is now array inside array . 
     // [products] = [products] -- [products] = [ [{...} , {...} , {...},...] ]--
     // so products = [{...} , {...} , {...},...] -total 81 object elements existed in products array .
     // thats why products.length = 81
 
+    
     const [products] = useProducts();
     const [cart, setCart] = useCart(products);
     // Remove theory: filter those products which are not selected by remove button 
